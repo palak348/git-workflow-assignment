@@ -1,0 +1,132 @@
+GIT COMMANDS USED IN THIS ASSIGNMENT
+====================================
+(in the order they were run; each followed by a short explanation)
+
+------------------------------------------------------------
+STEP 1: LOCAL REPOSITORY SETUP
+------------------------------------------------------------
+git init -b main
+    Creates a new, empty Git repository in the current folder (a hidden .git
+    directory) and names the default branch "main".
+
+git config user.name
+git config user.email
+    Shows the author name and email that Git will record on each commit.
+
+git status
+    Shows the current branch, which files are staged, modified, or untracked.
+
+------------------------------------------------------------
+STEP 2: GIT WORKFLOW EXECUTION
+------------------------------------------------------------
+git add .
+    Stages every new/changed file in the folder so it is included in the next commit.
+
+git commit -m "Initial commit: add index.html and about.html"
+    Saves the staged files as a snapshot (commit 1) recording the initial project state.
+
+git diff
+    Shows line-by-line changes in the working folder that are not yet staged.
+
+git add index.html
+    Stages only the modified index.html file.
+
+git commit -m "Update index.html: add last updated note"
+    Records the modification to index.html as the second commit.
+
+git branch feature
+    Creates a new branch called "feature" pointing at the current commit.
+
+git branch
+    Lists all local branches; the "*" marks the branch currently checked out.
+
+git checkout feature
+    Switches the working folder to the "feature" branch.
+
+git add about.html
+    Stages the change made to about.html on the feature branch.
+
+git commit -m "Add features list to about.html (feature branch)"
+    Commits the change only to the feature branch (main is unaffected).
+
+git log --oneline
+    Shows the commit history, one line per commit (short hash + message).
+
+git checkout main
+    Switches back to the main branch.
+
+git merge feature --no-ff -m "Merge branch feature into main"
+    Merges the feature branch into main. --no-ff forces a merge commit so the
+    branch activity remains visible in the history (also on GitHub).
+
+git log --oneline --graph --all --decorate
+    Displays the full commit history of all branches as a text graph, with
+    branch labels, showing every change, the branch and the merge.
+
+------------------------------------------------------------
+STEP 3: .GITIGNORE IMPLEMENTATION
+------------------------------------------------------------
+(.gitignore created with the rules "*.log" and "temp/")
+
+git check-ignore -v debug.log temp/notes.txt
+    Verifies that these files are ignored and shows which .gitignore rule
+    matches each of them.
+
+git add .gitignore
+    Stages the .gitignore file (debug.log and temp/ are not picked up by Git).
+
+git commit -m "Add .gitignore to ignore .log files and temp/ folder"
+    Commits the .gitignore so the ignore rules are shared with the repository.
+
+------------------------------------------------------------
+STEP 4: UNDO OPERATION
+------------------------------------------------------------
+git commit -m "Add footer to index.html (to be undone)"
+    Makes an additional commit (adds a footer to index.html) that will be undone.
+
+git log --oneline -3
+    Shows the last 3 commits to confirm the extra commit exists.
+
+git revert --no-edit HEAD
+    Undoes the last commit by creating a NEW commit that reverses its changes.
+    History is preserved, which makes it the safe undo for shared/pushed work.
+    (Alternative: "git reset --hard HEAD~1" deletes the commit from history -
+    only safe for commits that have never been pushed.)
+
+git log --oneline -4
+    Shows the original commit and the new "Revert ..." commit in the history.
+
+git status
+    Confirms the working tree is clean after the revert (footer removed).
+
+------------------------------------------------------------
+STEP 5: GITHUB INTEGRATION
+------------------------------------------------------------
+git remote add origin https://github.com/palak348/git-workflow-assignment.git
+    Links the local repository to the GitHub repository under the name "origin".
+
+git remote -v
+    Lists configured remotes and their fetch/push URLs to verify the connection.
+
+git push -u origin main
+    Uploads the main branch and all its commits to GitHub; -u sets origin/main
+    as the default upstream for future push/pull commands.
+
+------------------------------------------------------------
+STEP 6: COMMAND DOCUMENTATION FILE
+------------------------------------------------------------
+git add git_commands.txt
+    Stages this documentation file.
+
+git commit -m "Add git_commands.txt documenting all Git commands used"
+    Commits the documentation file to the repository.
+
+git push
+    Pushes the new commit to GitHub (upstream was already set by "push -u").
+
+git push origin feature
+    Uploads the feature branch too, so branch activity is visible on GitHub.
+
+git log --oneline --graph --all --decorate
+    Final history check; now also shows origin/main and origin/feature,
+    confirming that the local and GitHub histories match.
