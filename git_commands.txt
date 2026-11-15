@@ -1,116 +1,120 @@
 GIT COMMANDS USED IN THIS ASSIGNMENT
 ====================================
-(in the order they were run; each followed by a short explanation)
+(in the order they were run; each followed by a brief explanation)
 
 ------------------------------------------------------------
 STEP 1: LOCAL REPOSITORY SETUP
 ------------------------------------------------------------
 git init -b main
-    Creates a new, empty Git repository in the current folder (a hidden .git
-    directory) and names the default branch "main".
+    Initializes a new Git repository in the project folder with "main" as the default branch.
 
 git config user.name
+    Shows the author name Git records on each commit.
+
 git config user.email
-    Shows the author name and email that Git will record on each commit.
+    Shows the author email Git records on each commit.
 
 git status
-    Shows the current branch, which files are staged, modified, or untracked.
+    Shows the current branch and which files are untracked, modified or staged.
 
 ------------------------------------------------------------
 STEP 2: GIT WORKFLOW EXECUTION
 ------------------------------------------------------------
 git add .
-    Stages every new/changed file in the folder so it is included in the next commit.
+    Stages all files in the folder for the next commit.
 
 git commit -m "Initial commit: add index.html and about.html"
-    Saves the staged files as a snapshot (commit 1) recording the initial project state.
+    Records the initial state of the project as the first commit.
 
 git diff
-    Shows line-by-line changes in the working folder that are not yet staged.
+    Shows the unstaged line-by-line changes made to index.html.
 
 git add index.html
-    Stages only the modified index.html file.
+    Stages the modified index.html file.
 
 git commit -m "Update index.html: add last updated note"
-    Records the modification to index.html as the second commit.
+    Records the modification of index.html as the second commit.
 
 git branch feature
-    Creates a new branch called "feature" pointing at the current commit.
+    Creates a new branch named "feature".
 
 git branch
-    Lists all local branches; the "*" marks the branch currently checked out.
+    Lists all local branches; "*" marks the current branch.
 
 git checkout feature
-    Switches the working folder to the "feature" branch.
+    Switches to the feature branch.
+
+git status
+    Shows that about.html has been modified on the feature branch.
 
 git add about.html
-    Stages the change made to about.html on the feature branch.
+    Stages the change made to about.html.
 
 git commit -m "Add features list to about.html (feature branch)"
-    Commits the change only to the feature branch (main is unaffected).
+    Commits the change to the feature branch only.
 
 git log --oneline
-    Shows the commit history, one line per commit (short hash + message).
+    Shows the commit history of the current branch, one line per commit.
 
 git checkout main
     Switches back to the main branch.
 
 git merge feature --no-ff -m "Merge branch feature into main"
-    Merges the feature branch into main. --no-ff forces a merge commit so the
-    branch activity remains visible in the history (also on GitHub).
+    Merges the feature branch into main; --no-ff creates a merge commit so the branch stays visible in history.
 
 git log --oneline --graph --all --decorate
-    Displays the full commit history of all branches as a text graph, with
-    branch labels, showing every change, the branch and the merge.
+    Displays the commit history of all branches as a graph, showing all commits, the branch and the merge.
 
 ------------------------------------------------------------
 STEP 3: .GITIGNORE IMPLEMENTATION
 ------------------------------------------------------------
-(.gitignore created with the rules "*.log" and "temp/")
+git status
+    Shows that only .gitignore is untracked; debug.log and the temp/ folder are ignored.
 
 git check-ignore -v debug.log temp/notes.txt
-    Verifies that these files are ignored and shows which .gitignore rule
-    matches each of them.
+    Confirms the files are ignored and shows the .gitignore rule (*.log, temp/) matching each one.
 
 git add .gitignore
-    Stages the .gitignore file (debug.log and temp/ are not picked up by Git).
+    Stages the .gitignore file.
 
 git commit -m "Add .gitignore to ignore .log files and temp/ folder"
-    Commits the .gitignore so the ignore rules are shared with the repository.
+    Commits the .gitignore file to the repository.
 
 ------------------------------------------------------------
 STEP 4: UNDO OPERATION
 ------------------------------------------------------------
+git add index.html
+    Stages the footer added to index.html for the additional commit.
+
 git commit -m "Add footer to index.html (to be undone)"
-    Makes an additional commit (adds a footer to index.html) that will be undone.
+    Makes the additional commit that will be undone.
 
 git log --oneline -3
-    Shows the last 3 commits to confirm the extra commit exists.
+    Shows the last 3 commits, confirming the additional commit is the latest.
 
 git revert --no-edit HEAD
-    Undoes the last commit by creating a NEW commit that reverses its changes.
-    History is preserved, which makes it the safe undo for shared/pushed work.
-    (Alternative: "git reset --hard HEAD~1" deletes the commit from history -
-    only safe for commits that have never been pushed.)
+    Undoes the last commit by creating a new commit that reverses its changes, keeping history intact.
 
 git log --oneline -4
-    Shows the original commit and the new "Revert ..." commit in the history.
+    Shows the additional commit followed by the new "Revert" commit.
 
 git status
-    Confirms the working tree is clean after the revert (footer removed).
+    Shows a clean working tree; index.html is back to its state before the undone commit.
+
+git log --oneline --graph --all --decorate
+    Shows the full repository history after the undo operation.
 
 ------------------------------------------------------------
 STEP 5: GITHUB INTEGRATION
 ------------------------------------------------------------
 git remote add origin https://github.com/palak348/git-workflow-assignment.git
-    Links the local repository to the GitHub repository under the name "origin".
+    Connects the local repository to the public GitHub repository under the name "origin".
 
 git remote -v
-    Lists configured remotes and their fetch/push URLs to verify the connection.
+    Lists the remote URLs to verify the connection.
 
 git push -u origin main
-    Uploads the main branch and all its commits to GitHub; -u sets origin/main
-    as the default upstream for future push/pull commands.
+    Pushes the main branch and its full history to GitHub and sets origin/main as upstream.
 
 ------------------------------------------------------------
 STEP 6: COMMAND DOCUMENTATION FILE
@@ -119,14 +123,25 @@ git add git_commands.txt
     Stages this documentation file.
 
 git commit -m "Add git_commands.txt documenting all Git commands used"
-    Commits the documentation file to the repository.
+    Commits this documentation file to the repository.
 
 git push
-    Pushes the new commit to GitHub (upstream was already set by "push -u").
+    Pushes the new commit on main to GitHub.
 
 git push origin feature
-    Uploads the feature branch too, so branch activity is visible on GitHub.
+    Pushes the feature branch to GitHub so the branch activity is visible there.
+
+git status
+    Confirms main is up to date with origin/main and nothing is left to commit.
 
 git log --oneline --graph --all --decorate
-    Final history check; now also shows origin/main and origin/feature,
-    confirming that the local and GitHub histories match.
+    Shows the final history, including origin/main and origin/feature on GitHub.
+
+git commit -am "Update git_commands.txt: keep each explanation to 1-2 lines"
+    Stages and commits the updated version of this file in one step.
+
+git push
+    Pushes the updated file to GitHub.
+
+git log --oneline --graph --all --decorate
+    Shows the final repository history, matching the history on GitHub.
